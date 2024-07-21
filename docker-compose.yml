@@ -29,6 +29,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
   schema-registry:
     image: confluentinc/cp-schema-registry
     container_name: schema-registry
@@ -42,13 +43,50 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: 'schema-registry'
       SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8585'
       SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'INFO'
+
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect:7.6.2
+    container_name: kafka-connect
+    depends_on:
+      - broker
+      - schema-registry
+    ports:
+      - 8083:8083
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: "broker:9092"
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: kafka-connect
+      CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: _connect-status
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8085'
+      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+      CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_PLUGIN_PATH: /usr/share/java,/data/connect-jars
+    volumes:
+      - $PWD/data:/data/connect-jars
+
+  sql-server:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sql-server
+    hostname: sql-server
+    environment:
+      SA_PASSWORD: Hard2Guess
+      ACCEPT_EULA: Y
+    ports:
+      - "1433:1433"
+
   akhq:
     image: tchiotludo/akhq:latest
     container_name: akhq
     restart: always
     depends_on:
-      - broker
-      - schema-registry
+      - kafka-connect
     ports:
       - "8080:8080"
     environment:
@@ -60,3 +98,4 @@ services:
                 bootstrap.servers: "broker:9092"
               schema-registry:
                 url: "http://schema-registry:8585"
+

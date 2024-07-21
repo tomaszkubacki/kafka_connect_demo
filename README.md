@@ -4,12 +4,24 @@
 
 ## Prerequesties
 
-Install docker and docker compose
+1) Install docker and docker compose
 (In case of Ubuntu install docker from snap it has docker compose in built in)
+2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
+
+## Run all required dockers
+
+```
+docker compose up -d akhq
+```
+
+### List connector 
+
+```
+
+```
 
 
 ## Scenearios
-
 1.  Stream event to MS SQL Server table
 
 ```bash
