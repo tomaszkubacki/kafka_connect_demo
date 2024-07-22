@@ -84,7 +84,6 @@ services:
   akhq:
     image: tchiotludo/akhq:latest
     container_name: akhq
-    restart: always
     depends_on:
       - kafka-connect
     ports:
