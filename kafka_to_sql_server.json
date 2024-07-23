@@ -1,24 +1,26 @@
 {
-  "connection.url": "jdbc:sqlserver://sql-server:1433;databaseName=my_logz",
+"name": "kafka_to_sql_server",
+"config" : {
+  "topics": "logz",
+  "connection.url": "jdbc:sqlserver://slq-server:1433;databaseName=my_logz",
   "connection.user":"SA",
+  "connector.class": "MicrosoftSqlServerSink",
+  "db.name":"SA",
   "connection.password":"Hard2Guess",
   "connection.attempts": "3",
   "connection.backoff.ms": "5000",
-  "topics": "logz",
   "db.timezone": "UTC",
-  "name": "sql-server-sink",
-  "connectorclass": "io.confluent.connect.jdbc.JdbcSinkConnector",
+  "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
   "dialect.name": "SqlServerDatabaseDialect",
   "auto.create": "false",
   "auto.evolve": "false",
   "tasks.max": "1",
   "batch.size": "1000",
-  "topics": "AccountType",
-  "key.converter": "org.apache.kafka.connect.converters.StringConverter",
+  "key.converter": "org.apache.kafka.connect.converters.LongConverter",
   "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
   "value.converter.schema.registry.url": "http://schema-registry:8081",
   "insert.mode": "UPSERT",
   "pk.mode": "record_key",
   "pk.fields": "id"
 }
-
+}

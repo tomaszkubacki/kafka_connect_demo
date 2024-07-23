@@ -32,7 +32,11 @@ curl http://localhost:8083/connectors
 ## Scenearios
 1.  Stream event to MS SQL Server table
 
-https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
+
+# Links
+
+- https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
+- https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
 
 ```bash
 docker compose up -d akhq
