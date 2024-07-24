@@ -56,6 +56,14 @@ curl -i -X POST localhost:8083/connectors \
 ```bash 
 curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
 ```
+
+### Register new schema
+```bash
+curl -i -X POST localhost:8085/subjects/message-value \
+ -H "Content-Type: application/json"  \
+ --data-binary "@message-schema.json"
+```
+
 ### Worklog
 
 ### 20/07/2024 
