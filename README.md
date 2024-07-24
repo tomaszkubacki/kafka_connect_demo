@@ -37,8 +37,11 @@ curl http://localhost:8083/connectors
 
 - https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
 - https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
+- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
+- https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
 
 ```bash
+
 docker compose up -d akhq
 ```
 
@@ -49,7 +52,10 @@ curl -i -X POST localhost:8083/connectors \
  -H "Content-Type: application/json"  \
  --data-binary "@kafka_to_sql_server.json"
 ```
-
+### Delete connector
+```bash 
+curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
+```
 ### Worklog
 
 ### 20/07/2024 
