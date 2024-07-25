@@ -1,8 +1,8 @@
 # Kafka Connect Demo
 
-## Prerequesties
+## Prerequisites
 
-1) Install Docker and ocker compose
+1) Install Docker and docker compose
 (In case of Ubuntu install Docker from snap it has docker compose built in)
 2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 and unpack jars into *data* directory in this repo (jars will be mounted as volume for kafka-connect)
@@ -27,8 +27,8 @@ curl -i -X POST localhost:8083/connectors \
  -H "Content-Type: application/json"  \
  --data-binary "@kafka_to_sql_server.json"
 ```
-3. Using akhq UI add message-schema.json in schema registry under message-value subject 
-4. Using akhq UI add message to *message* topic with any string key and value according to schema e.g.
+3. Using akhq ui add message-schema.json in schema registry under message-value subject 
+4. Using akhq ui add message to *message* topic with any string key and value according to schema e.g.
 ```json
 {"id":"id", "message": "example"}
 ```
