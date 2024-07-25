@@ -5,7 +5,6 @@
     "connection.url": "jdbc:sqlserver://sql-server:1433;databaseName=my_logz",
     "connection.user": "SA",
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
-    "db.name": "SA",
     "connection.password": "Hard2Guess",
     "connection.attempts": "3",
     "connection.backoff.ms": "5000",

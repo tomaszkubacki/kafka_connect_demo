@@ -1,11 +1,9 @@
 # Kafka Connect Demo
 
-**_NOTE:_** This is work in progress - see worklog below
-
 ## Prerequesties
 
 1) Install docker and docker compose
-(In case of Ubuntu install docker from snap it has docker compose in built in)
+(In case of Ubuntu install docker from snap it has docker compose built in)
 2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 
 ## Run all required docker containers
@@ -15,23 +13,40 @@ If you compose up skhq, they will get up all because of dependecy relation in co
 docker compose up -d akhq
 ```
 
+## Demo scenearios
+
+Assuming all services are running:
+
+###  Stream event to MS SQL Server table
+
+1. Create table in MS SQL using message.sql definition
+2. Add Kafka connector stored in *kafka_to_sql_server.json*
+```bash
+curl -i -X POST localhost:8083/connectors \
+ -H "Content-Type: application/json"  \
+ --data-binary "@kafka_to_sql_server.json"
+```
+3. Using akhq UI add message-schema.json in schema registry under message-value subject 
+4. Using akhq UI add message to *message* topic with any string key and value according to schema e.g.
+```json
+{"id":"id", "message": "example"}
+```
+
+5. check is data is stored in sql database *my_logz* in table messages
+
+## Helper commands
+
 ### List connector plugins
 
 ```
 curl http://localhost:8083/connector-plugins | jq
 ```
 
-
 ### List connectors 
 
 ```
 curl http://localhost:8083/connectors
 ```
-
-
-## Scenearios
-1.  Stream event to MS SQL Server table
-
 
 # Links
 
@@ -53,12 +68,7 @@ curl -i -X GET localhost:8083/connectors
 
 ### Add connector definition
 
-```bash
-curl -i -X POST localhost:8083/connectors \
- -H "Content-Type: application/json"  \
- --data-binary "@kafka_to_sql_server.json"
-```
-### Delete connector
+## Delete connector
 ```bash 
 curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
 ```
