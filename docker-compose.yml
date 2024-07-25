@@ -41,7 +41,7 @@ services:
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://broker:9092'
       SCHEMA_REGISTRY_HOST_NAME: 'schema-registry'
-      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8585'
+      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8085'
       SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'INFO'
 
   kafka-connect:
@@ -69,7 +69,7 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_PLUGIN_PATH: /usr/share/java,/data/connect-jars
     volumes:
-      - $PWD/data:/data/connect-jars
+      - $PWD/data:/etc/kafka-connect/jars
 
   sql-server:
     image: mcr.microsoft.com/mssql/server
@@ -96,5 +96,5 @@ services:
               properties:
                 bootstrap.servers: "broker:9092"
               schema-registry:
-                url: "http://schema-registry:8585"
+                url: "http://schema-registry:8085"
 

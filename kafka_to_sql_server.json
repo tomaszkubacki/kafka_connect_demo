@@ -2,7 +2,7 @@
   "name": "kafka_to_sql_server",
   "config": {
     "topics": "message",
-    "connection.url": "jdbc:sqlserver://slq-server:1433;databaseName=my_logz",
+    "connection.url": "jdbc:sqlserver://sql-server:1433;databaseName=my_logz",
     "connection.user": "SA",
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
     "db.name": "SA",
@@ -19,7 +19,7 @@
     "key.converter.schemas.enable": false,
     "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
     "value.converter.schemas.enable": true,
-    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schema.registry.url": "http://schema-registry:8085",
     "insert.mode": "UPSERT",
     "pk.mode": "record_key",
     "pk.fields": "id"

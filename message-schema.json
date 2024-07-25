@@ -1,12 +1,7 @@
 {
-  "schema": {
-    "type": "struct",
-    "fields": [
-      {
-        "type": "string",
-        "optional": "false",
-        "field": "message"
-      }
-    ]
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "message": { "type": "string" }
   }
 }

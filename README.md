@@ -45,6 +45,12 @@ curl http://localhost:8083/connectors
 docker compose up -d akhq
 ```
 
+### List active connectors
+
+```bash
+curl -i -X GET localhost:8083/connectors 
+```
+
 ### Add connector definition
 
 ```bash
@@ -57,9 +63,14 @@ curl -i -X POST localhost:8083/connectors \
 curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
 ```
 
+### List schemas
+```bash
+curl -i -X GET localhost:8085/subjects
+```
+
 ### Register new schema
 ```bash
-curl -i -X POST localhost:8085/subjects/message-value \
+curl -i -X POST localhost:8085/subjects/testing \
  -H "Content-Type: application/json"  \
  --data-binary "@message-schema.json"
 ```
