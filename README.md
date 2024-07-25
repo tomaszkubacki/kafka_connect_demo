@@ -2,8 +2,8 @@
 
 ## Prerequesties
 
-1) Install docker and docker compose
-(In case of Ubuntu install docker from snap it has docker compose built in)
+1) Install Docker and ocker compose
+(In case of Ubuntu install Docker from snap it has docker compose built in)
 2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 and unpack jars into *data* directory in this repo (jars will be mounted as volume for kafka-connect)
 
@@ -16,8 +16,7 @@ docker compose up -d akhq
 
 ## Demo scenarios
 
-Sceanarios assume all docker services  are running.
-
+Scenarios assume all docker services  are running.
 
 ### Stream event to MS SQL Server table
 
@@ -61,7 +60,13 @@ docker compose up -d akhq
 curl -i -X GET localhost:8083/connectors 
 ```
 
-### Add connector definition
+### Add connector
+
+```bash
+curl -i -X POST localhost:8083/connectors \
+ -H "Content-Type: application/json"  \
+ --data-binary "@kafka_to_sql_server.json"
+```
 
 ### Delete connector
 ```bash 
@@ -73,7 +78,7 @@ curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
 curl -i -X GET localhost:8085/subjects
 ```
 
-### Register new schema
+### Register a new schema
 ```bash
 curl -i -X POST localhost:8085/subjects/testing \
  -H "Content-Type: application/json"  \
