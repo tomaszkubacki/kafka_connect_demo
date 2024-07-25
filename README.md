@@ -63,7 +63,7 @@ curl -i -X GET localhost:8083/connectors
 
 ### Add connector definition
 
-## Delete connector
+### Delete connector
 ```bash 
 curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
 ```
@@ -88,6 +88,12 @@ curl -i -X POST localhost:8085/subjects/testing \
 
 
 ### Worklog
+
+### 25/07/2024
+Added working example and README for streaming from Kafka to Sql Server scenerio
+
+#### next steps
+- show postgres source and sink connector
 
 ### 20/07/2024 
 Added basic docker compose with prerequesties in docker mode
