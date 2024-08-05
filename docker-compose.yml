@@ -84,6 +84,7 @@ services:
   akhq:
     image: tchiotludo/akhq:latest
     container_name: akhq
+    depends_on:
       - broker
     ports:
       - "8080:8080"
