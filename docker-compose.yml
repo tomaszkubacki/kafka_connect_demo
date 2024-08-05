@@ -84,8 +84,7 @@ services:
   akhq:
     image: tchiotludo/akhq:latest
     container_name: akhq
-    depends_on:
-      - kafka-connect
+      - broker
     ports:
       - "8080:8080"
     environment:

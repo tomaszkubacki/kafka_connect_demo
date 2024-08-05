@@ -3,7 +3,10 @@
 ## Prerequisites
 
 1) Install Docker and docker compose
-(In case of Ubuntu install Docker from snap it has docker compose built in)
+
+> [!TIP]
+> In case of Ubuntu install docker from snap it has docker compose built in or install docker-compose-v2
+
 2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 and unpack jars into *data* directory in this repo (jars will be mounted as volume for kafka-connect)
 
@@ -11,7 +14,7 @@ and unpack jars into *data* directory in this repo (jars will be mounted as volu
 
 If you compose up skhq, they will get up all because of dependecy relation in compose file
 ```
-docker compose up -d akhq
+docker compose up -d
 ```
 
 ## Demo scenarios
@@ -93,6 +96,9 @@ curl -i -X POST localhost:8085/subjects/testing \
 
 
 ### Worklog
+
+### 05/08/2024
+Tweak README, correct compose dependecy
 
 ### 25/07/2024
 Added working example and README for streaming from Kafka to Sql Server scenerio
