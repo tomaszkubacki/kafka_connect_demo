@@ -4,7 +4,7 @@ In this scenario we will stream kafka event into Sql Server table using JdbcSink
 JdbcSinkConnector requires, that messages are schema based either by passing schema with payload
 or passing schema id.
 
-All the operations will be done with culr or docker - no gui tools required
+All the operations will be done with culr or docker - no gui tools required (although possible)
 
 
 ## Kafka to SqlServer steps
@@ -75,7 +75,7 @@ All the operations will be done with culr or docker - no gui tools required
   docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
   ```
   
-  Alternativly you can use akhq web ui (however you need to select correct schema for value)
+  Alternatively you can use akhq web ui (however you need to select correct schema for value)
 
 5. check is data is stored in sql database *my_messages* in table messages
 
