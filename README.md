@@ -1,7 +1,7 @@
 # Kafka Connect Demo
 
-This repository contains set of ready recipies allowing to run and test various Kafka Connect scenarios, 
-with step by step procedures using docker and command cline interface.
+This repository contains set of step by step recipies allowing to run and test various Kafka Connect scenarios, 
+using docker and command line interface.
 
 ## Prerequisites
 
@@ -36,7 +36,6 @@ Scenarios assume all docker services are running.
 - [Stream data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server/kafka_to_sql_server.md)
 
 
-
 ## Helper commands
 
 ### List connector plugins
@@ -51,23 +50,10 @@ curl http://localhost:8083/connector-plugins | jq
 curl http://localhost:8083/connectors
 ```
 
-### List active connectors
-
-```shell
-curl -i -X GET localhost:8083/connectors
-```
-
 ### Clean up docker 
 ```shell
 docker compose down
 ```
-# Links
-
-- https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
-- https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
-- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
-- https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
-
 ### Worklog
 
 ### 15/02/2025
