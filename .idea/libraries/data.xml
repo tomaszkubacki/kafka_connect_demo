@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="data">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/data/postgresql-42.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/sqlite-jdbc-3.41.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/osdt_core-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/oraclepki-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/orai18n-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/ucp-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/mssql-jdbc-8.4.1.jre8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/kafka-connect-jdbc-10.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/checker-qual-3.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/ojdbc8-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/slf4j-api-1.7.36.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/ons-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/simplefan-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/xdb-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/common-utils-6.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/jtds-1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/osdt_cert-19.7.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/data/xmlparserv2-19.7.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

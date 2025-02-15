@@ -1,5 +1,8 @@
 # Kafka Connect Demo
 
+This repository contains set of ready recipies allowing to run and test various Kafka Connect scenarios, 
+with step by step procedures using docker and command cline interface.
+
 ## Prerequisites
 
 1) Install Docker and docker compose
@@ -12,31 +15,27 @@ and unpack jars into *data* directory in this repo (jars will be mounted as volu
 
 ## Run all required docker containers
 
-If you compose up skhq, they will get up all because of dependecy relation in compose file
+Start all required containers at once by invoking 
+
 ```
 docker compose up -d
 ```
 
+## Clean up
+
+After finishing you can remove all containers by invoking
+
+```
+docker compose down
+```
+
 ## Demo scenarios
 
-Scenarios assume all docker services  are running.
+Scenarios assume all docker services are running.
 
-### Stream event to MS SQL Server table
+- [Stream data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server)
 
-1. Create table in MS SQL using message.sql definition using any db browser
-2. Add Kafka connector stored in *kafka_to_sql_server.json*
-```bash
-curl -i -X POST localhost:8083/connectors \
- -H "Content-Type: application/json"  \
- --data-binary "@kafka_to_sql_server.json"
-```
-3. Using akhq ui add message-schema.json in schema registry under message-value subject 
-4. Using akhq ui add message to *message* topic with any string key and value according to schema e.g.
-```json
-{"id":"id", "message": "example"}
-```
 
-5. check is data is stored in sql database *my_logz* in table messages using any db browser
 
 ## Helper commands
 
@@ -48,44 +47,19 @@ curl http://localhost:8083/connector-plugins | jq
 
 ### List connectors 
 
-```
+```shell
 curl http://localhost:8083/connectors
-```
-
-```bash
-
-docker compose up -d akhq
 ```
 
 ### List active connectors
 
-```bash
-curl -i -X GET localhost:8083/connectors 
+```shell
+curl -i -X GET localhost:8083/connectors
 ```
 
-### Add connector
-
-```bash
-curl -i -X POST localhost:8083/connectors \
- -H "Content-Type: application/json"  \
- --data-binary "@kafka_to_sql_server.json"
-```
-
-### Delete connector
-```bash 
-curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
-```
-
-### List schemas
-```bash
-curl -i -X GET localhost:8085/subjects
-```
-
-### Register a new schema
-```bash
-curl -i -X POST localhost:8085/subjects/testing \
- -H "Content-Type: application/json"  \
- --data-binary "@message-schema.json"
+### Clean up docker 
+```shell
+docker compose down
 ```
 # Links
 
@@ -94,8 +68,10 @@ curl -i -X POST localhost:8085/subjects/testing \
 - https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
 - https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
 
-
 ### Worklog
+
+### 15/02/2025
+Rework SqlServer streaming to be more precise cli only tutorial
 
 ### 05/08/2024
 Tweak README, correct compose dependecy
@@ -112,5 +88,4 @@ Added basic docker compose with prerequesties in docker mode
 #### Next steps
 - add kafka-connect and ms sql to docker compose
 - try to run kafka-connect in the first sceneario
-
 
