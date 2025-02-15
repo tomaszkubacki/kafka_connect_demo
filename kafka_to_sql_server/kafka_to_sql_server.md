@@ -48,7 +48,7 @@ All the operations will be done with culr or docker - no gui tools required (alt
     }
   }
   ```
-  let's register it in *schem-registry*
+  let's register it in the *schema-registry*
   
   ```shell
   curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
@@ -61,9 +61,9 @@ All the operations will be done with culr or docker - no gui tools required (alt
   {"id":1}
   ```
 
-4. Pass message to  *message* topic
+4. Pass message to *message* topic
 
-  Now we need to pass a message
+  Now we need to publish following content on a topic *message* 
   ```
   {"id":"a", "message": "b"}
   ```
@@ -75,7 +75,14 @@ All the operations will be done with culr or docker - no gui tools required (alt
   docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
   ```
   
-  Alternatively you can use akhq web ui (however you need to select correct schema for value)
+> [!TIP]
+> Alternatively you can use akhq web ui (however you need to select correct schema for value)
+
+
+> [!NOTE]
+> We can't use regular console producer since it will not attach schema id in message payload which is required by connector in order to recognize message type
+
+
 
 5. check is data is stored in sql database *my_messages* in table messages
 
@@ -120,4 +127,13 @@ curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" -
 ```shell
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "delete from message where 1 = 1"'
 ```
+
+## Links
+
+- https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
+- https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
+- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
+- https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
+
+
 
