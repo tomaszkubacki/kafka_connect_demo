@@ -80,9 +80,8 @@ All the operations will be done with culr or docker - no gui tools required (alt
 
 
 > [!NOTE]
-> We can't use regular console producer since it will not attach schema id in message payload which is required by connector in order to recognize message type
-
-
+> We can't use a regular console producer since it will not attach the schema id 
+> in a message payload which is required by connector in order to recognize message type
 
 5. check is data is stored in sql database *my_messages* in table messages
 
@@ -134,6 +133,4 @@ docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U
 - https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
 - https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
 - https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
-
-
-
+- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained
