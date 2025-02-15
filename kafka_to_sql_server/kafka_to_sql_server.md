@@ -7,79 +7,79 @@ or passing schema id.
 All the operations will be done with culr or docker - no gui tools required
 
 
-Steps:
+## Kafka to SqlServer steps
 
 1. Create database *my_messages*, create table *message* 
-
-First we create a database 
-```shell
-docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database my_messages"'
-```
-next we copy message message.sql into Sql Server container
-```shell
-docker cp message.sql sql-server:/tmp/message.sql
-```
-then we create table defined in message.sql
-```shell
-docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -i /tmp/message.sql"
-```
-
-Finally we can check if it works
-```shell
-docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
-```
-this should return empty table result
+  First we create a database 
+  ```shell
+  docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database my_messages"'
+  ```
+  next we copy message message.sql into Sql Server container
+  ```shell
+  docker cp message.sql sql-server:/tmp/message.sql
+  ```
+  then we create table defined in message.sql
+  ```shell
+  docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -i /tmp/message.sql"
+  ```
+  finally we can check if it works
+  ```shell
+  docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
+  ```
+  this should return empty table result
 
 2. Add Kafka connector stored in *kafka_to_sql_server.json*
 
-Here we register connector itself- definition is in the *kafka_to_sql_server.json* file
-```shell
-curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server.json"
+  Here we register connector itself. Definition is in the *kafka_to_sql_server.json* file
+  ```shell
+  curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server.json"
+  ```
 
-```
-3. Register message schema into kafka Schema Registry to tell connector how to put data into sql table.
+3. Register message schema into kafka Schema Registry
 
-Let's define a schema for json value like this
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "id": { "type": "string" },
-    "message": { "type": "string" }
+  In order to tell connect how to put data into sql server it's required to define a schema. E.g. like this
+  
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "id": { "type": "string" },
+      "message": { "type": "string" }
+    }
   }
-}
-```
-let's register it in *schem-registry*
-
-```shell
-curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
---data '{"schemaType":"JSON", "schema":"{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"}}}"}'
-```
-This should return schema id
-e.g.
-
-```json
-{"id":1}
-```
+  ```
+  let's register it in *schem-registry*
+  
+  ```shell
+  curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+  --data '{"schemaType":"JSON", "schema":"{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"}}}"}'
+  ```
+  This should return schema id
+  e.g.
+  
+  ```json
+  {"id":1}
+  ```
 
 4. Pass message to  *message* topic
 
-Now we need to to pass message
-```
-{"id":"a", "message": "b"}
-```
-
-it will be passed using kafka-console-producer shipped inside broker docker container.
-
-
-```shell
-docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
-```
-
-Alternativly you can use akhq web ui (however you need to select correct schema for value)
+  Now we need to pass a message
+  ```
+  {"id":"a", "message": "b"}
+  ```
+  
+  it will be passed using kafka-console-producer shipped inside broker docker container.
+  
+  
+  ```shell
+  docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
+  ```
+  
+  Alternativly you can use akhq web ui (however you need to select correct schema for value)
 
 5. check is data is stored in sql database *my_messages* in table messages
+
+Final step let's check if data is in the table
 
 ```shell
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
