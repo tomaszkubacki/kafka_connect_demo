@@ -33,7 +33,7 @@ docker compose down
 
 Scenarios assume all docker services are running.
 
-- [Stream data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server)
+- [Stream data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server/kafka_to_sql_server.md)
 
 
 

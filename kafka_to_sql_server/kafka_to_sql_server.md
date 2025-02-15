@@ -68,7 +68,7 @@ All the operations will be done with culr or docker - no gui tools required (alt
   {"id":"a", "message": "b"}
   ```
   
-  it will be passed using kafka-console-producer shipped inside broker docker container.
+  it will be passed using *kafka-json-schema-console-producer* shipped inside schema-registry container.
   
   
   ```shell
