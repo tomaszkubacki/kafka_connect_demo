@@ -84,13 +84,9 @@ curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" -
 ### delete messages in message table
 
 ```shell
-TODO
+  docker exec pg sh -c "psql -d my_db -U docker -c 'delete from kafka_sink where 1 = 1'"
 ```
 
 ## Links
 
-- https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
-- https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
 - https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
-- https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
-- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained

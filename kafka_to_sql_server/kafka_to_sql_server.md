@@ -132,4 +132,3 @@ docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U
 - https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
 - https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
 - https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
-- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained
