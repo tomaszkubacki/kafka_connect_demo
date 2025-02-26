@@ -68,7 +68,7 @@ All the operations will be done with culr or docker - no gui tools required (alt
   {"id":"a", "message": "b"}
   ```
   
-  it will be passed using *kafka-json-schema-console-producer* shipped inside schema-registry container.
+  using *kafka-json-schema-console-producer* shipped in schema-registry container.
   
   
   ```shell
@@ -85,7 +85,6 @@ All the operations will be done with culr or docker - no gui tools required (alt
 
 5. check is data is stored in sql database *my_messages* in table messages
 
-Final step let's check if data is in the table
 
 ```shell
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
