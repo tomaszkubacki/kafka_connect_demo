@@ -55,24 +55,4 @@ curl http://localhost:8083/connectors
 ```shell
 docker compose down
 ```
-### Worklog
-
-### 15/02/2025
-Rework SqlServer streaming to be more precise cli only tutorial
-
-### 05/08/2024
-Tweak README, correct compose dependecy
-
-### 25/07/2024
-Added working example and README for streaming from Kafka to Sql Server scenerio
-
-#### next steps
-- show postgres source and sink connector
-
-### 20/07/2024 
-Added basic docker compose with prerequesties in docker mode
-
-#### Next steps
-- add kafka-connect and ms sql to docker compose
-- try to run kafka-connect in the first sceneario
 
