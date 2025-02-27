@@ -4,43 +4,48 @@ In this scenario we will stream kafka schemaless messages into PostgreSQL table 
 JdbcSinkConnector requires, that messages are schema based, hence we will wrap messages 
 into schema using *SimpleSchemaWrappingConverter* which can found [here](https://github.com/tomaszkubacki/schema_wrapping)
 
+>[!TIP]
+>Make sure all containers are up and running as defined in root docker-compose.yml file
+
 ### Kafka to PostgreSQL steps
 
-1. Create table *kafka_sink* in *my_db*
+1. Create table *kafka_sink* in a *my_db* database
 
-  copy kafka sink table definition into PostgreSql container
-  ```shell
-  docker cp kafka_sink.sql pg:/tmp/kafka_sink.sql
-  ```
-  and create table defined in there
-  ```shell
-  docker exec pg sh -c "psql -d my_db -U docker -f /tmp/kafka_sink.sql"
-  ```
-  finally check if it works
-  ```shell
-  docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
-  ```
-  this should return empty table result
+copy kafka sink table definition into PostgreSql container
+```shell
+docker cp kafka_sink.sql pg:/tmp/kafka_sink.sql
+```
+
+create table defined in there
+```shell
+docker exec pg sh -c "psql -d my_db -U docker -f /tmp/kafka_sink.sql"
+```
+
+check if it works
+```shell
+docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
+```
+this should return empty table result
 
 2. Add Kafka connector stored in *kafka_to_postgres.json*
 
-  register the connector itself. 
-  ```shell
-  curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
-  ```
+register the connector itself. 
+```shell
+curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
+```
 
 4. Pass message to *kafka_sink* topic
 
-  publish following content on the topic *kafka_sink* 
-  ```
-  {"id":"a", "message": "b"}
-  ```
-  
-  using *kafka-console-producer* in broker container.
+publish following content on the topic *kafka_sink* 
+```
+{"id":"a", "message": "b"}
+```
 
-  ```shell
-  docker exec broker sh -c 'echo "{\"id\":1, \"message\": \"b\"}" | /bin/kafka-console-producer --bootstrap-server broker:9092 --topic kafka_sink'
-  ```
+using *kafka-console-producer* in broker container.
+
+```shell
+docker exec broker sh -c 'echo "{\"id\":1, \"message\": \"b\"}" | /bin/kafka-console-producer --bootstrap-server broker:9092 --topic kafka_sink'
+```
   
 > [!TIP]
 > Alternatively you can use akhq web ui 
