@@ -8,69 +8,72 @@ or passing schema id.
 ### Kafka to SqlServer steps
 
 1. Create database *my_messages*, create table *message* 
-  First we create a database 
-  ```shell
-  docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database my_messages"'
-  ```
-  next copy message table definition *message.sql* into Sql Server container
-  ```shell
-  docker cp message.sql sql-server:/tmp/message.sql
-  ```
-  create table defined in message.sql
-  ```shell
-  docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -i /tmp/message.sql"
-  ```
-  finally check if it works
-  ```shell
-  docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
-  ```
-  this should return empty table result
+
+create a database 
+```shell
+docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database my_messages"'
+```
+
+copy message table definition *message.sql* into Sql Server container
+```shell
+docker cp message.sql sql-server:/tmp/message.sql
+```
+
+create table defined in message.sql
+```shell
+docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -i /tmp/message.sql"
+```
+
+check if it works
+```shell
+docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
+```
+this should return empty table result
 
 2. Add Kafka connector stored in *kafka_to_sql_server.json*
 
-  Register the connector itself. Definition is in the *kafka_to_sql_server.json* file
-  ```shell
-  curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server.json"
-  ```
+register the connector itself. Definition is in the *kafka_to_sql_server.json* file
+```shell
+curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server.json"
+```
 
 3. Register message schema into kafka Schema Registry
 
-  In order to tell connect how to put data into sql server it's required to define a schema. Example schema:
+register given schema
   
-  ```json
-  {
-    "type": "object",
-    "properties": {
-      "id": { "type": "string" },
-      "message": { "type": "string" }
-    }
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "message": { "type": "string" }
   }
-  ```
-  let's register it in the *schema-registry*
-  
-  ```shell
-  curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
-  --data '{"schemaType":"JSON", "schema":"{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"}}}"}'
-  ```
-  This should return schema id
-  e.g.
-  
-  ```json
-  {"id":1}
-  ```
+}
+```
+in the *schema-registry*
+
+```shell
+curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+--data '{"schemaType":"JSON", "schema":"{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"}}}"}'
+```
+This should return schema id
+e.g.
+
+```json
+{"id":1}
+```
 
 4. Pass message to *message* topic
 
-  Publish following content on the topic *message* 
-  ```
-  {"id":"a", "message": "b"}
-  ```
+publish following content on the topic *message* 
+```
+{"id":"a", "message": "b"}
+```
+
+using *kafka-json-schema-console-producer* shipped in a schema-registry container.
   
-  using *kafka-json-schema-console-producer* shipped in a schema-registry container.
-  
-  
-  ```shell
-  docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
+```shell
+docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
   ```
   
 > [!TIP]
