@@ -1,21 +1,22 @@
-### Stream shemaless events to PostgreSQL table
+## Stream shemaless events to PostgreSQL table
 
 In this scenario we will stream kafka schemaless messages into PostgreSQL table using JdbcSinkConnector.
 JdbcSinkConnector requires, that messages are schema based, hence we will wrap messages 
 into schema using *SimpleSchemaWrappingConverter* which can found [here](https://github.com/tomaszkubacki/schema_wrapping)
 
-## Kafka to PostgreSQL steps
+### Kafka to PostgreSQL steps
 
 1. Create table *kafka_sink* in *my_db*
-First we copy message message.sql into PostgreSql container
+
+  copy kafka sink table definition into PostgreSql container
   ```shell
   docker cp kafka_sink.sql pg:/tmp/kafka_sink.sql
   ```
-  then we create table defined in kafka_sink.sql
+  and create table defined in there
   ```shell
   docker exec pg sh -c "psql -d my_db -U docker -f /tmp/kafka_sink.sql"
   ```
-  finally we can check if it works
+  finally check if it works
   ```shell
   docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
   ```
@@ -23,14 +24,14 @@ First we copy message message.sql into PostgreSql container
 
 2. Add Kafka connector stored in *kafka_to_postgres.json*
 
-  Here we register connector itself. Definition is in the *kafka_to_postgres.json* file
+  register the connector itself. 
   ```shell
   curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
   ```
 
 4. Pass message to *kafka_sink* topic
 
-  Now we need to publish following content on a topic *kafka_sink* 
+  publish following content on the topic *kafka_sink* 
   ```
   {"id":"a", "message": "b"}
   ```
@@ -51,42 +52,42 @@ First we copy message message.sql into PostgreSql container
   docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
 ```
 
-## Troubleshoot and clean up commands
+### Troubleshoot and clean up commands
 
-### check if connector is running
+#### check if connector is running
 ```shell 
 curl localhost:8083/connectors
 ```
 
-### check connector errors while publishing messages
-```
+#### check connector errors while publishing messages
+```shell
 docker logs kafka-connect
 ```
 
-### check connector *kafka_to_postgres* config
+#### check connector *kafka_to_postgres* config
 
 ```shell 
 curl -i localhost:8083/connectors/kafka_to_postgres
 ```
 
-### delete connectora *kafka_to_postgres*
+#### delete connectora *kafka_to_postgres*
 
 ```shell 
 curl -i -X DELETE localhost:8083/connectors/kafka_to_postgres
 ```
 
-### add connector stored in *kafka_to_postgresql.json*
+#### add connector stored in *kafka_to_postgresql.json*
 
 ```shell
 curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
 ```
 
-### delete messages in message table
+#### delete messages in message table
 
 ```shell
   docker exec pg sh -c "psql -d my_db -U docker -c 'delete from kafka_sink where 1 = 1'"
 ```
 
-## Links
+### Links
 
 - https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
