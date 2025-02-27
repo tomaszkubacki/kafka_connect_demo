@@ -1,4 +1,4 @@
-## Stream events to MS SQL Server table`
+## Stream events to MS SQL Server table
 
 In this scenario we will stream kafka messages (without shema) into Sql Server table using JdbcSinkConnector.
 
@@ -14,12 +14,12 @@ create a database
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database kafka_sink"'
 ```
 
-copy message table definition *kafka_sink.sql* into Sql Server container
+copy *kafka_sink* table definition *kafka_sink.sql* into Sql Server container
 ```shell
 docker cp kafka_sink.sql sql-server:/tmp/kafka_sink.sql
 ```
 
-create table defined in message.sql
+create table defined in kafka_sink.sql
 ```shell
 docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d kafka_sink -U SA -P Hard2Guess -i /tmp/kafka_sink.sql"
 ```
@@ -37,33 +37,7 @@ register the connector itself. Definition is in the *kafka_to_sql_server.json* f
 curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server_schemaless.json"
 ```
 
-3. Register message schema into kafka Schema Registry
-
-register given schema
-  
-```json
-{
-  "type": "object",
-  "properties": {
-    "id": { "type": "string" },
-    "message": { "type": "string" }
-  }
-}
-```
-in the *schema-registry*
-
-```shell
-curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
---data '{"schemaType":"JSON", "schema":"{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"}}}"}'
-```
-This should return schema id
-e.g.
-
-```json
-{"id":1}
-```
-
-4. Pass message to *kafka_sink* topic
+3. Pass message to *kafka_sink* topic
 
 publish following content on the topic *kafka_sink* 
 ```
@@ -79,7 +53,7 @@ docker exec broker  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafk
 > [!TIP]
 > Alternatively you can use akhq web ui
 
-5. check is data is stored in sql database *my_messages* in table messages
+4. check is data is stored in *kafka_sink* table
 
 
 ```shell
@@ -104,7 +78,7 @@ docker logs kafka-connect
 curl -i localhost:8083/connectors/kafka_to_sql_server_schemaless
 ```
 
-#### delete connectora *kafka_to_sql_server*
+#### delete connectora *kafka_to_sql_server_schemaless*
 
 ```shell 
 curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server_schemaless
@@ -116,10 +90,10 @@ curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server_schemaless
 curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server_schemaless.json"
 ```
 
-#### delete messages in message table
+#### delete messages in kafka_sink table
 
 ```shell
-docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "delete from message where 1 = 1"'
+docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d kafka_sink -U SA -P Hard2Guess -Q "delete from kafka_sink where 1 = 1"'
 ```
 
 ### Links
