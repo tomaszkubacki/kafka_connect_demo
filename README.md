@@ -33,9 +33,11 @@ docker compose down
 
 Scenarios assume all docker services are running.
 
-- [Stream data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server/kafka_to_sql_server.md)
+- [kafka to SqlServer using JdbcSinkConnector](kafka_to_sql_server/kafka_to_sql_server.md)
 
-- [Stream schemaless data from kafka topic to PostgreSQL using JdbcSinkConnector](kafka_to_postgresql/kafka_to_postgres.md)
+- [kafka schemaless data from kafka topic to PostgreSQL using JdbcSinkConnector](kafka_to_postgresql/kafka_to_postgres.md)
+
+- [kafka schemaless data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server_schemaless/kafka_to_sql_server_schemaless.md)
 
 ## Helper commands
 
