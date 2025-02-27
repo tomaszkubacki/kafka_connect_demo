@@ -4,6 +4,8 @@ In this scenario we will stream kafka event into Sql Server table using JdbcSink
 JdbcSinkConnector requires, that messages are schema based either by passing schema with payload
 or passing schema id.
 
+>[!TIP]
+>Make sure all containers are up and running as defined in root docker-compose.yml file
 
 ### Kafka to SqlServer steps
 
