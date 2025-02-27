@@ -3,8 +3,7 @@
 In this scenario we will stream kafka messages (without shema) into Sql Server table using JdbcSinkConnector.
 
 JdbcSinkConnector requires, that messages are schema based, hence we will wrap messages 
-into schema using *schema_wrapping* package which can found [here](https://github.com/tomaszkubacki?tab=packages&repo_name=schema_wrapping)
-
+into schema using *SimpleSchemaWrappingConverter* which can found [here](https://github.com/tomaszkubacki/schema_wrapping)
 
 >[!TIP]
 >Make sure all containers are up and running as defined in root docker-compose.yml file

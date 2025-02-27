@@ -13,7 +13,9 @@ using docker and command line interface.
 2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 and unpack jars into *data* directory in this repo (jars will be mounted as volume for kafka-connect)
 
-3) Download newest SimpleSchemaWrappingConverter jar (in releases) and put it into *data* directory (just like jdbc jars)
+3) Download newest *schema_wrapping* jar (in releases) and put it into *data* directory (just like jdbc jars) 
+from [here](https://github.com/tomaszkubacki?tab=packages&repo_name=schema_wrapping)
+
 
 ## Run all required docker containers
 
