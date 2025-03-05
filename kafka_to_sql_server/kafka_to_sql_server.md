@@ -16,7 +16,7 @@ create a database
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database my_messages"'
 ```
 
-copy message table definition *message.sql* into Sql Server container
+copy *message.sql* into Sql Server container
 ```shell
 docker cp message.sql sql-server:/tmp/message.sql
 ```

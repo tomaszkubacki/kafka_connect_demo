@@ -1,4 +1,4 @@
-## Stream shemaless events to PostgreSQL table
+## Stream schemaless events to PostgreSQL table
 
 In this scenario we will stream kafka schemaless messages into PostgreSQL table using JdbcSinkConnector.
 JdbcSinkConnector requires, that messages are schema based, hence we will wrap messages 
@@ -9,7 +9,7 @@ into schema using *SimpleSchemaWrappingConverter* which can found [here](https:/
 
 ### Kafka to PostgreSQL steps
 
-1. Create table *kafka_sink* in a *my_db* database
+1. Create table *kafka_sink* in *my_db* database
 
 copy kafka sink table definition into PostgreSql container
 ```shell

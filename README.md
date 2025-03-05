@@ -1,19 +1,19 @@
 # Kafka Connect Demo
 
-This repository contains set of step by step recipies allowing to run and test various Kafka Connect scenarios, 
+This repository contains set of step-by-step recipes allowing to run and test various Kafka Connect scenarios, 
 using docker and command line interface.
 
 ## Prerequisites
 
 1) Install Docker and docker compose
 
-> [!TIP]
-> In case of Ubuntu install docker from snap it has docker compose built in or install docker-compose-v2
+    > [!TIP]
+    > In case of Ubuntu install docker from snap it has docker compose built in or install docker-compose-v2
 
-2) Downlaod JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
+2) Download JDBC Connector (Source and Sink) https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
 and unpack jars into *data* directory in this repo (jars will be mounted as volume for kafka-connect)
 
-3) Download newest *schema_wrapping* jar (in releases) and put it into *data* directory (just like jdbc jars) 
+3) Download the newest *schema_wrapping* jar (in releases) and put it into *data* directory (just like jdbc jars) 
 from [here](https://github.com/tomaszkubacki?tab=packages&repo_name=schema_wrapping)
 
 
@@ -21,15 +21,15 @@ from [here](https://github.com/tomaszkubacki?tab=packages&repo_name=schema_wrapp
 
 Start all required containers at once by invoking 
 
-```
+```shell
 docker compose up -d
 ```
 
 ## Clean up
 
-After finishing you can remove all containers by invoking
+After finishing, you can remove all containers by invoking
 
-```
+```shell
 docker compose down
 ```
 

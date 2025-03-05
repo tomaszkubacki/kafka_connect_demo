@@ -1,5 +1,5 @@
 {
- "name": "kafka_to_sql_server_schemaless",
+  "name": "kafka_to_sql_server_schemaless",
   "config": {
     "topics.regex": "kafka(.*)",
     "input.data.format": "JSON",
@@ -11,16 +11,20 @@
     "connection.backoff.ms": "5000",
     "db.timezone": "UTC",
     "dialect.name": "SqlServerDatabaseDialect",
-    "auto.create": "true",
+    "auto.create": "false",
     "auto.evolve": "false",
     "tasks.max": "1",
     "batch.size": "1000",
     "key.converter.schemas.enable": "false",
-    "value.converter":"net.tk.converter.SimpleSchemaWrappingConverter",
+    "value.converter": "net.tk.kafka.connect.converter.SimpleSchemaWrappingConverter",
     "value.converter.schemas.enable": "false",
+    "transforms": "addRecordMetadata",
+    "transforms.addRecordMetadata.type": "net.tk.kafka.connect.transforms.AddMetadataTransform",
+    "transforms.addRecordMetadata.headers": "a-b-c;abc",
     "insert.mode": "INSERT",
     "errors.tolerance": "all",
     "errors.log.enable": "true",
-    "pk.mode": "kafka"
+    "pk.mode": "kafka",
+    "pk.fields": "kafka_topic, kafka_partition,kafka_offset"
   }
 }
