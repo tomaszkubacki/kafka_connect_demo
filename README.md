@@ -19,7 +19,7 @@ from [here](https://github.com/tomaszkubacki?tab=packages&repo_name=schema_wrapp
 
 ## Run all required docker containers
 
-Start all required containers at once by invoking 
+Start all required containers at once
 
 ```shell
 docker compose up -d
@@ -27,7 +27,7 @@ docker compose up -d
 
 ## Clean up
 
-After finishing, you can remove all containers by invoking
+Remove all containers
 
 ```shell
 docker compose down
@@ -47,7 +47,7 @@ Scenarios assume all docker services are running.
 
 ### List connector plugins
 
-```
+```shell
 curl http://localhost:8083/connector-plugins | jq
 ```
 

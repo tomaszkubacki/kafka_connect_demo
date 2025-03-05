@@ -25,6 +25,6 @@
     "errors.tolerance": "all",
     "errors.log.enable": "true",
     "pk.mode": "kafka",
-    "pk.fields": "kafka_topic, kafka_partition,kafka_offset"
+    "pk.fields": "kafka_topic,kafka_partition,kafka_offset"
   }
 }
