@@ -8,14 +8,14 @@ into schema using custom *SimpleSchemaWrappingConverter* which can be found [her
 > Make sure all necessary containers are up and running as defined in the docker-compose.yml file
 > and all prerequisites steps are fulfilled as defined in the root README
 
-### Kafka to PostgreSQL steps
+## Kafka to PostgreSQL steps
 
 1. Add Kafka connector stored in *kafka_to_postgres.json*
  
    ```shell
    curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
    ```
-   > [!TIP]
+   > [TIP]
    > you can see connector statues, definition in the *akhq* ui
    > running at http://localhost:8080 (assuming root docker-compose was used)
 
@@ -41,19 +41,19 @@ into schema using custom *SimpleSchemaWrappingConverter* which can be found [her
      docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
    ```
 
-### Troubleshoot and clean up commands
+## Troubleshoot and clean up commands
 
-#### check if connector is running
+### check if connector is running
 ```shell 
 curl localhost:8083/connectors
 ```
 
-#### check connector errors while publishing messages
+### check connector errors while publishing messages
 ```shell
 docker logs kafka-connect
 ```
 
-#### check connector *kafka_to_postgres* config
+### check connector *kafka_to_postgres* config
 
 ```shell 
 curl -i localhost:8083/connectors/kafka_to_postgres
@@ -65,18 +65,18 @@ curl -i localhost:8083/connectors/kafka_to_postgres
 curl -i -X DELETE localhost:8083/connectors/kafka_to_postgres
 ```
 
-#### add connector stored in *kafka_to_postgresql.json*
+### add connector stored in *kafka_to_postgresql.json*
 
 ```shell
 curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
 ```
 
-#### delete messages in message table
+### delete messages in message table
 
 ```shell
   docker exec pg sh -c "psql -d my_db -U docker -c 'delete from kafka_sink where 1 = 1'"
 ```
 
-### Links
+## Links
 
 - https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
