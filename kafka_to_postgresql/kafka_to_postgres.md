@@ -16,7 +16,7 @@ into schema using custom *SimpleSchemaWrappingConverter* which can be found [her
    curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
    ```
    > [TIP]
-   > you can see connector statues, definition in the *akhq* ui
+   > you can see connector status and definition in the *akhq* ui
    > running at http://localhost:8080 (assuming root docker-compose was used)
 
 2. Pass message to *kafka_sink* topic
