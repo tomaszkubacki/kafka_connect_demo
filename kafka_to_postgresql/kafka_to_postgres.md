@@ -59,7 +59,7 @@ docker logs kafka-connect
 curl -i localhost:8083/connectors/kafka_to_postgres
 ```
 
-#### delete connectora *kafka_to_postgres*
+### delete connectora *kafka_to_postgres*
 
 ```shell 
 curl -i -X DELETE localhost:8083/connectors/kafka_to_postgres
