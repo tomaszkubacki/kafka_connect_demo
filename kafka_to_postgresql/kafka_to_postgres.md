@@ -1,61 +1,45 @@
 ## Stream schemaless events to PostgreSQL table
 
 In this scenario we will stream kafka schemaless messages into PostgreSQL table using JdbcSinkConnector.
-JdbcSinkConnector requires, that messages are schema based, hence we will wrap messages 
-into schema using *SimpleSchemaWrappingConverter* which can found [here](https://github.com/tomaszkubacki/schema_wrapping)
+JdbcSinkConnector requires, that messages have schema, hence we will wrap messages 
+into schema using custom *SimpleSchemaWrappingConverter* which can be found [here](https://github.com/tomaszkubacki/schema_wrapping)
 
->[!TIP]
->Make sure all containers are up and running as defined in root docker-compose.yml file
+>[!NOTE]
+> Make sure all necessary containers are up and running as defined in the docker-compose.yml file
+> and all prerequisites steps are fulfilled as defined in the root README
 
 ### Kafka to PostgreSQL steps
 
-1. Create table *kafka_sink* in *my_db* database
+1. Add Kafka connector stored in *kafka_to_postgres.json*
+ 
+   ```shell
+   curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
+   ```
+   > [!TIP]
+   > you can see connector statues, definition in the *akhq* ui
+   > running at http://localhost:8080 (assuming root docker-compose was used)
 
-copy kafka sink table definition into PostgreSql container
-```shell
-docker cp kafka_sink.sql pg:/tmp/kafka_sink.sql
-```
+2. Pass message to *kafka_sink* topic
 
-create table defined in there
-```shell
-docker exec pg sh -c "psql -d my_db -U docker -f /tmp/kafka_sink.sql"
-```
+   publish example message the *kafka_sink* topic
+   ```
+   {"id":"a", "message": "b"}
+   ```
 
-check if it works
-```shell
-docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
-```
-this should return empty table result
+   using *kafka-console-producer* in broker container.
 
-2. Add Kafka connector stored in *kafka_to_postgres.json*
-
-register the connector itself. 
-```shell
-curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
-```
-
-4. Pass message to *kafka_sink* topic
-
-publish following content on the topic *kafka_sink* 
-```
-{"id":"a", "message": "b"}
-```
-
-using *kafka-console-producer* in broker container.
-
-```shell
-docker exec broker sh -c 'echo "{\"id\":1, \"message\": \"b\"}" | /bin/kafka-console-producer --bootstrap-server broker:9092 --topic kafka_sink'
-```
+   ```shell
+   docker exec broker sh -c 'echo "{\"id\":2, \"message\": \"b\"}" | /bin/kafka-console-producer --bootstrap-server broker:9092 --topic kafka_sink'
+   ```
   
-> [!TIP]
-> Alternatively you can use akhq web ui 
+   > [!TIP]
+   > Alternatively you can use *akhq* to produce a message
 
-5. check is data is stored in sql database *kafka_sink* in table
+3. Check is data is stored in sql database *kafka_sink* in table
 
-
-```shell
-  docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
-```
+   ```shell
+     docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
+   ```
 
 ### Troubleshoot and clean up commands
 
