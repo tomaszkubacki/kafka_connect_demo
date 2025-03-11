@@ -17,6 +17,7 @@
     "batch.size": "1000",
     "key.converter.schemas.enable": "false",
     "value.converter": "net.tk.kafka.connect.converter.SimpleSchemaWrappingConverter",
+    "value.converter.content.name": "message_content",
     "value.converter.schemas.enable": "false",
     "transforms": "addRecordMetadata",
     "transforms.addRecordMetadata.type": "net.tk.kafka.connect.transforms.AddMetadataTransform",

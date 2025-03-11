@@ -1,7 +1,7 @@
 create table dbo.kafka_sink
 (
     id bigint  IDENTITY(1,1) NOT NULL,
-    content         varchar(max) not null,
+    message_content varchar(max) not null,
     message_key     varchar(max),
     message_ts      bigint       not null,
     abc             varchar(max),
