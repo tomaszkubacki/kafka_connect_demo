@@ -1,0 +1,21 @@
+{
+  "name": "jdbc_source_sqlserver",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:sqlserver://sql-server:1433;databaseName=kafka_source;encrypt=false",
+    "connection.user": "SA",
+    "connection.password": "Hard2Guess",
+    "query": "SELECT message_content, kafka_topic, message_key FROM kafka_source",
+    "mode": "bulk",
+    "poll.interval.ms": 30000,
+    "tasks.max": 1,
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter.schemas.enable": "false",
+    "topic.prefix": "my_topic",
+    "transforms": "ExtractField",
+    "transforms.ExtractField.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+    "transforms.ExtractField.field": "message_content"
+   }
+}
+

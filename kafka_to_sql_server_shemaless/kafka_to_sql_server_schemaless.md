@@ -22,7 +22,7 @@ and headers to target column
     
     copy *kafka_sink.sql* into Sql Server container
     ```shell
-    docker cp message.sql sql-server:/tmp/kafka_sink.sql
+    docker cp kafka_sink.sql sql-server:/tmp/kafka_sink.sql
     ```
     
     create table defined in kafka_sink.sql
