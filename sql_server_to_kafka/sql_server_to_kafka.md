@@ -8,6 +8,11 @@ connector. Connector is querying db every 10 seconds.
 For any new record from that table, data stored in *message_content* column
 will be sent to the topic defined in *kafka_topic* column.  
 
+>[!NOTE]
+> For topic selection we are using custom *SelectTopicTransform*
+> *SelectTopicTransform* source code can be found [here](https://github.com/tomaszkubacki/schema_wrapping/blob/main/src/main/java/net/tk/kafka/connect/transforms/SelectTopicTransform.java)
+
+
 ### Step-by-step instruction:
 
 1. Create database *kafka_source* and *kafka_source* table
