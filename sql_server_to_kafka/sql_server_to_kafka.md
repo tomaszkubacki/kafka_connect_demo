@@ -8,6 +8,8 @@ connector. Connector is querying db every 10 seconds.
 For any new record from that table, data stored in *message_content* column
 will be sent to the topic defined in *kafka_topic* column.  
 
+### Step-by-step instruction:
+
 1. Create database *kafka_source* and *kafka_source* table
 
     create a database 
