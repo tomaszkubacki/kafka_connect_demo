@@ -21,13 +21,10 @@ In this scenario we will stream kafka messages from  Ms Sql Server table  to Kaf
     docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d kafka_source -U SA -P Hard2Guess -i /tmp/kafka_source.sql"
     ```
 
-
     query table to see if config is working fine (you should see empty table result)
     ```shell
     docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d kafka_source -U SA -P Hard2Guess -Q 'select * from kafka_source'"
     ```
-
-    docker exec -it sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d kafka_source -U SA -P Hard2Guess"
 
 2. Add Kafka connector stored in *sql_server_to_kafka.json*
 
@@ -43,7 +40,7 @@ In this scenario we will stream kafka messages from  Ms Sql Server table  to Kaf
     docker exec -it sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d kafka_source -U SA -P Hard2Guess"
     ```
      ```shell
-    insert into dbo.kafka_source(message_content,message_key, kafka_topic) values ('{"a": 898}', '1234567890', 'test_topic')
+    insert into dbo.kafka_source(message_content,message_key, kafka_topic) values ('{"a": 343}', '1234567890', 'other_topic')
     ```
 
 #### delete connector  *kafka_to_sql_server_schemaless*

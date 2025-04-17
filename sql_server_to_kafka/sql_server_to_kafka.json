@@ -14,7 +14,9 @@
     "value.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter.schemas.enable": "false",
     "topic.prefix": "my_topic",
-    "transforms": "ExtractField",
+    "transforms": "SelectTopic,ExtractField",
+    "transforms.SelectTopic.type": "net.tk.kafka.connect.transforms.SelectTopicTransform",
+    "transforms.SelectTopic.topic_field": "kafka_topic",
     "transforms.ExtractField.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
     "transforms.ExtractField.field": "message_content"
    }
