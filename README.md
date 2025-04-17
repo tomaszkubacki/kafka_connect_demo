@@ -43,6 +43,8 @@ Scenarios assume all docker services are running.
 
 - [kafka schemaless data from kafka topic to SqlServer using JdbcSinkConnector](kafka_to_sql_server_shemaless/kafka_to_sql_server_schemaless.md)
 
+- [sql sql to kafka](sql_server_to_kafka/sql_server_to_kafka.md)
+
 ## Helper commands
 
 ### List connector plugins
