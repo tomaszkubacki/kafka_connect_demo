@@ -2,8 +2,10 @@
 
 In this scenario we will stream kafka messages from Ms Sql Server table to Kafka using JdbcSourceConnector.
 
-First we create [kafka_source.sql](kafka_source.sql) table. Next we define ([sql_server_to_kafka.json](sql_server_to_kafka.json)  
-connector. Connector is querying db every 10 seconds. For any new record from that table, data stored in *message_content* column
+First we create [kafka_source.sql](kafka_source.sql) table. Next we define [sql_server_to_kafka.json](sql_server_to_kafka.json)  
+connector. Connector is querying db every 10 seconds. 
+
+For any new record from that table, data stored in *message_content* column
 will be sent to the topic defined in *kafka_topic* column.  
 
 1. Create database *kafka_source* and *kafka_source* table
