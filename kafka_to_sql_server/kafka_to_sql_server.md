@@ -1,40 +1,46 @@
-## Stream events to MS SQL Server table
+# Stream events to MS SQL Server table
 
-In this scenario we will stream kafka event into Sql Server table using JdbcSinkConnector.
+In this scenario we will stream Kafka event into Sql Server table using JdbcSinkConnector.
 JdbcSinkConnector requires, that messages are schema based either by passing schema with payload
 or passing schema id.
 
->[!TIP]
->Make sure all containers are up and running as defined in root docker-compose.yml file
+> [!TIP]
+> Make sure all containers are up and running as defined in root docker-compose.yml file
 
 ### Kafka to SqlServer steps
 
-1. Create database *my_messages*, create table *message* 
+1. Create database _my_messages_, create table _message_
 
-create a database 
+create a database
+
 ```shell
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -U SA -P Hard2Guess -Q "create database my_messages"'
 ```
 
-copy *message.sql* into Sql Server container
+copy _message.sql_ into Sql Server container
+
 ```shell
 docker cp message.sql sql-server:/tmp/message.sql
 ```
 
 create table defined in message.sql
+
 ```shell
 docker exec sql-server sh -c "/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -i /tmp/message.sql"
 ```
 
 check if it works
+
 ```shell
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
 ```
+
 this should return empty table result
 
-2. Add Kafka connector stored in *kafka_to_sql_server.json*
+2. Add Kafka connector stored in _kafka_to_sql_server.json_
 
-register the connector itself. Definition is in the *kafka_to_sql_server.json* file
+register the connector itself. Definition is in the _kafka_to_sql_server.json_ file
+
 ```shell
 curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server.json"
 ```
@@ -42,7 +48,7 @@ curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" -
 3. Register message schema into kafka Schema Registry
 
 register given schema
-  
+
 ```json
 {
   "type": "object",
@@ -52,42 +58,43 @@ register given schema
   }
 }
 ```
-in the *schema-registry*
+
+in the _schema-registry_
 
 ```shell
 curl -i -X POST  localhost:8085/subjects/message-value/versions -H "Content-Type: application/vnd.schemaregistry.v1+json" \
 --data '{"schemaType":"JSON", "schema":"{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"message\":{\"type\":\"string\"}}}"}'
 ```
+
 This should return schema id
 e.g.
 
 ```json
-{"id":1}
+{ "id": 1 }
 ```
 
-4. Pass message to *message* topic
+4. Pass message to _message_ topic
 
-publish following content on the topic *message* 
+publish following content on the topic _message_
+
 ```
 {"id":"a", "message": "b"}
 ```
 
-using *kafka-json-schema-console-producer* shipped in a schema-registry container.
-  
+using _kafka-json-schema-console-producer_ shipped in a schema-registry container.
+
 ```shell
 docker exec schema-registry  sh -c 'echo "{\"id\":\"a\", \"message\": \"b\"}" | /bin/kafka-json-schema-console-producer --bootstrap-server broker:9092  --property schema.registry.url=http://localhost:8085 --topic message --property value.schema.id=1'
-  ```
-  
+```
+
 > [!TIP]
 > Alternatively you can use akhq web ui (however you need to select correct schema for value)
 
-
 > [!NOTE]
-> We can't use a regular console producer since it will not attach the schema id 
+> We can't use a regular console producer since it will not attach the schema id
 > in a message payload which is required by connector in order to recognize message type
 
-5. check is data is stored in sql database *my_messages* in table messages
-
+5. check is data is stored in sql database _my_messages_ in table messages
 
 ```shell
 docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U SA -P Hard2Guess -Q "select * from message"'
@@ -96,28 +103,30 @@ docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U
 ### Troubleshoot and clean up commands
 
 #### check if connector is running
-```shell 
+
+```shell
 curl localhost:8083/connectors
 ```
 
 #### check connector errors while publishing messages
+
 ```
 docker logs kafka-connect
 ```
 
-#### check connector *kafka_to_sql_server* config
+#### check connector _kafka_to_sql_server_ config
 
-```shell 
+```shell
 curl -i localhost:8083/connectors/kafka_to_sql_server
 ```
 
-#### delete connectora *kafka_to_sql_server*
+#### delete connectora _kafka_to_sql_server_
 
-```shell 
+```shell
 curl -i -X DELETE localhost:8083/connectors/kafka_to_sql_server
 ```
 
-#### add connector stored in *kafka_to_sql_server.json*
+#### add connector stored in _kafka_to_sql_server.json_
 
 ```shell
 curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_sql_server.json"
@@ -131,7 +140,7 @@ docker exec sql-server sh -c '/opt/mssql-tools18/bin/sqlcmd -C -d my_messages -U
 
 ### Links
 
-- https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html
-- https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server
-- https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/
-- https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector
+- <https://docs.confluent.io/cloud/current/connectors/cc-microsoft-sql-server-sink.html>
+- <https://stackoverflow.com/questions/68200588/kafka-connect-jdbc-source-connector-jdbc-sink-connector-mssql-sql-server>
+- <https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/>
+- <https://stackoverflow.com/questions/76584938/how-to-handle-nested-arrays-of-struct-in-kafka-jdbc-sink-connector>
