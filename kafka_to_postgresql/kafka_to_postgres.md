@@ -1,11 +1,13 @@
 # Stream schemaless events to PostgreSQL table
 
-In this scenario we will stream Kafka schemaless messages into PostgreSQL table using JdbcSinkConnector.
+In this scenario we will stream Kafka schemaless messages into PostgreSQL table
+using the _JdbcSinkConnector_.
 JdbcSinkConnector requires, that messages have schema, hence we will wrap messages
-into schema using custom _SimpleSchemaWrappingConverter_ which can be found [here](https://github.com/tomaszkubacki/schema_wrapping)
+into schema using custom _SimpleSchemaWrappingConverter_ which [can be found here](https://github.com/tomaszkubacki/schema_wrapping)
 
 > [!NOTE]
-> Make sure all necessary containers are up and running as defined in the docker-compose.yml file
+> Make sure all necessary containers are up and running as defined
+> in the _docker-compose.yml_ file
 > and all prerequisites steps are fulfilled as defined in the root README
 
 ## Kafka to PostgreSQL steps
@@ -40,7 +42,7 @@ into schema using custom _SimpleSchemaWrappingConverter_ which can be found [her
 3. Check is data is stored in sql database _kafka_sink_ in table
 
    ```shell
-     docker exec pg sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
+     docker exec pg-1 sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
    ```
 
 ## Troubleshoot and clean up commands
@@ -78,7 +80,7 @@ curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" -
 ### delete messages in message table
 
 ```shell
-  docker exec pg sh -c "psql -d my_db -U docker -c 'delete from kafka_sink where 1 = 1'"
+  docker exec pg-1 sh -c "psql -d my_db -U docker -c 'delete from kafka_sink where 1 = 1'"
 ```
 
 ## Links

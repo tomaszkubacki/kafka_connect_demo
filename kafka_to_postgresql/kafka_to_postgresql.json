@@ -5,7 +5,7 @@
     "input.data.format": "JSON",
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
     "dialect.name": "PostgreSqlDatabaseDialect",
-    "connection.url": "jdbc:postgresql://pg:5432/my_db",
+    "connection.url": "jdbc:postgresql://pg-1:5432/my_db",
     "connection.user": "docker",
     "connection.password": "docker",
     "connection.backoff.ms": "5000",
@@ -15,7 +15,7 @@
     "tasks.max": "1",
     "batch.size": "1000",
     "key.converter.schemas.enable": "false",
-    "value.converter":"net.tk.kafka.connect.converter.SimpleSchemaWrappingConverter",
+    "value.converter": "net.tk.kafka.connect.converter.SimpleSchemaWrappingConverter",
     "value.converter.schemas.enable": "false",
     "insert.mode": "INSERT",
     "errors.tolerance": "all",
@@ -23,5 +23,3 @@
     "pk.mode": "none"
   }
 }
-
-
