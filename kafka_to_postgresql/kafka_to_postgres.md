@@ -1,18 +1,30 @@
 # Stream schemaless events to PostgreSQL table
 
+<!-- markdownlint-configure-file { "MD013": { "line_length": 150} } -->
+
 In this scenario we will stream Kafka schemaless messages into PostgreSQL table
 using the _JdbcSinkConnector_.
 JdbcSinkConnector requires, that messages have schema, hence we will wrap messages
 into schema using custom _SimpleSchemaWrappingConverter_ which [can be found here](https://github.com/tomaszkubacki/schema_wrapping)
 
-> [!NOTE]
-> Make sure all necessary containers are up and running as defined
-> in the _docker-compose.yml_ file
-> and all prerequisites steps are fulfilled as defined in the root README
-
 ## Kafka to PostgreSQL steps
 
-1. Add Kafka connector stored in _kafka_to_postgres.json_
+1. Run required containers
+
+   ```shell
+   cd ..
+   docker compose up kafka-connect pg akhq -d
+   ```
+
+2. Create some topics on broker
+
+   ```shell
+   docker exec broker sh -c 'kafka-topics --bootstrap-server localhost:29092 --create --topic data-one --partitions 6'
+   docker exec broker sh -c 'kafka-topics --bootstrap-server localhost:29092 --create --topic data-two --partitions 6'
+   docker exec broker sh -c 'kafka-topics --bootstrap-server localhost:29092 --create --topic data-three --partitions 6'
+   ```
+
+3. Add Kafka connector stored in _kafka_to_postgres.json_
 
    ```shell
    curl -i -X POST localhost:8083/connectors  -H "Content-Type: application/json" --data-binary "@kafka_to_postgresql.json"
@@ -22,27 +34,33 @@ into schema using custom _SimpleSchemaWrappingConverter_ which [can be found her
    > you can see connector status and definition in the _akhq_ ui
    > running at <http://localhost:8080> (assuming root docker-compose was used)
 
-2. Pass message to _kafka_sink_ topic
+4. Pass message to _kafka_sink_ topic
 
    publish example message the _kafka_sink_ topic
 
-   ```
-   {"id":"a", "message": "b"}
+   ```json
+   { "id": "a", "message": "b" }
    ```
 
    using _kafka-console-producer_ in broker container.
 
    ```shell
-   docker exec broker sh -c 'echo "{\"id\":2, \"message\": \"b\"}" | /bin/kafka-console-producer --bootstrap-server broker:9092 --topic kafka_sink'
+   docker exec broker sh -c 'echo "{\"id\":2, \"message\": \"b\"}" | /bin/kafka-console-producer --bootstrap-server broker:9092 --topic data-one'
    ```
 
    > [!TIP]
    > Alternatively you can use _akhq_ to produce a message
 
-3. Check is data is stored in sql database _kafka_sink_ in table
+5. Check is data is stored in sql database _kafka_sink_ in table
 
    ```shell
      docker exec pg-1 sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
+   ```
+
+6. clean up
+
+   ```shell
+   docker compose down
    ```
 
 ## Troubleshoot and clean up commands

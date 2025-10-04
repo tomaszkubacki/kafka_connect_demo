@@ -1,5 +1,7 @@
 # Stream events to MS SQL Server table
 
+<!-- markdownlint-configure-file { "MD013": { "line_length": 120} } -->
+
 In this scenario we will stream Kafka event into Sql Server table using JdbcSinkConnector.
 JdbcSinkConnector requires, that messages are schema based either by passing schema with payload
 or passing schema id.

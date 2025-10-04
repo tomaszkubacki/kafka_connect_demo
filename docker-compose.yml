@@ -45,6 +45,7 @@ services:
     image: confluentinc/cp-kafka-connect:7.9.2
     container_name: kafka-connect
     depends_on:
+      - zookeeper
       - broker
       - schema-registry
     ports:
