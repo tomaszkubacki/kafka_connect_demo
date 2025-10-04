@@ -65,3 +65,7 @@ curl http://localhost:8083/connectors
 ```shell
 docker compose down
 ```
+
+### links
+
+- https://betterstack.com/community/guides/monitoring/visualize-prometheus-metrics-grafana/

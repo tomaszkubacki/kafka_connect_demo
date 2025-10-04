@@ -54,7 +54,7 @@ into schema using custom _SimpleSchemaWrappingConverter_ which [can be found her
 5. Check is data is stored in sql database _kafka_sink_ in table
 
    ```shell
-     docker exec pg-1 sh -c "psql -d my_db -U docker -c 'select * from kafka_sink'"
+     docker exec pg-1 sh -c "psql -d my_db -U docker -c 'select * from kafka_sink limit 40'"
    ```
 
 6. clean up
