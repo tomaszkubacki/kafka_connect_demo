@@ -83,6 +83,12 @@ docker logs kafka-connect
 curl -i localhost:8083/connectors/kafka_to_postgres
 ```
 
+### check connector consumer group status
+
+```shell
+docker exec broker sh -c "kafka-consumer-groups --bootstrap-server localhost:29092 --all-groups --describe"
+```
+
 ### delete connectora _kafka_to_postgres_
 
 ```shell

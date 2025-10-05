@@ -89,16 +89,35 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_DB=my_db
 
+  kafka-exporter:
+    image: danielqsj/kafka-exporter
+    container_name: kafka-exporter
+    command: ["--kafka.server=broker:29092"]
+    ports:
+      - 9308:9308
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
+    depends_on:
+      - zookeeper
+      - broker
+      - kafka-exporter
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - 9090:9090
-
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
   akhq:
     image: tchiotludo/akhq:0.26.0
     container_name: akhq
